@@ -133,6 +133,7 @@ $(document).ready(function () {
 				'amount_no': votes_no,
 				'amount_blank': votes_blank,
 				'amount_abstain': votes_abstain,
+				'total_votes': votes_yes + votes_no + votes_blank + votes_abstain,
 				'presence': alvs[alv_id].presence,
 				'name': name
 			});
@@ -199,7 +200,7 @@ function get_voting_result(alv_id, agenda_id, yes, no, blank, abstain, presence)
 	let out = 'Voorstel aangenomen. ';
 	let quorum_limit = Math.ceil(voting_options[agenda.voting_option].quorum * total_nr_members);
 	if (presence.length < quorum_limit) {
-		out += 'Quorum niet gehaald: ' + presence.length + '/' + quorum_limit + '), dus het wordt een conceptbesluit.';
+		out += 'Quorum niet gehaald: (' + presence.length + '/' + quorum_limit + '), dus het wordt een conceptbesluit.';
 	}
 
 	return out;

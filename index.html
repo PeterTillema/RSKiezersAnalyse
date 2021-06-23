@@ -39,47 +39,56 @@
 <div class="w3-container w3-margin-top content">
     <div class="w3-right-align w3-margin-bottom">
         <input type="file" id="alv-import" hidden>
-        <label for="alv-import" class="w3-button w3-light-gray" style="margin-bottom: 0;"><img alt="export" src="img/application_get.png"> ALV's importeren</label>
-        <button class="w3-button w3-light-gray" onclick="export_alvs()"><img alt="export" src="img/application_put.png"> ALV's exporteren</button>
+        <label for="alv-import" class="w3-button w3-light-gray" style="margin-bottom: 0;"><img alt="export"
+                                                                                               src="img/application_get.png">
+            ALV's importeren</label>
+        <button class="w3-button w3-light-gray" onclick="export_alvs()"><img alt="export" src="img/application_put.png">
+            ALV's exporteren
+        </button>
     </div>
 
     <div id="alv-accordion">
         <!-- This HTML will be rendered using the template below -->
     </div>
 
-    <button type="button" class="btn w3-orange w3-text-white w3-margin-top" data-toggle="modal" data-target="#alv_modal">
+    <button type="button" class="btn w3-orange w3-text-white w3-margin-top" data-toggle="modal"
+            data-target="#alv_modal">
         ALV toevoegen
     </button>
 </div>
 
 <template id="alv-accordion-template">
     {{#each alvs as |alv alvId|}}
-        <div id="alv_{{alvId}}" style="margin-top: 5px;">
-            <div class="w3-leftbar w3-rightbar float-rightbar w3-border-orange w3-pale-orange w3-round collapsed" data-toggle="collapse" data-target="#alv_collapse_{{alvId}}" aria-expanded="false" aria-controls="alv_collapse_{{alvId}}" style="cursor: pointer;">
-                <div class="w3-container container-fluid" style="padding: 10px;">
-                    {{name}} ({{date}} {{start_time}})
-                </div>
+    <div id="alv_{{alvId}}" style="margin-top: 5px;">
+        <div class="w3-leftbar w3-rightbar float-rightbar w3-border-orange w3-pale-orange w3-round collapsed"
+             data-toggle="collapse" data-target="#alv_collapse_{{alvId}}" aria-expanded="false"
+             aria-controls="alv_collapse_{{alvId}}" style="cursor: pointer;">
+            <div class="w3-container container-fluid" style="padding: 10px;">
+                {{name}} ({{date}} {{start_time}})
             </div>
         </div>
+    </div>
 
-        <div id="alv_collapse_{{@index}}" class="collapse alv_collapse_bs_event" aria-labelledby="alv_{{@index}}" data-parent="#alv-accordion">
-            <div class="w3-container">
-                <div class="w3-half">
-                    <div id="agenda_accordion_{{@index}}" class="w3-margin-left w3-margin-right">
-                        <h2>Agenda</h2>
-                        <ul class="w3-ul agenda-wrapper" id="agenda-wrapper_alv_{{alvId}}">
-                            {{#each this.agenda as |agenda agendaId|}}
-                                <li class="w3-bar">
-                                    <div id="alv_{{alvId}}_agenda_{{agendaId}}" class="w3-row w3-leftbar w3-rightbar w3-round w3-light-gray">
-                                        <div class="w3-half">
+    <div id="alv_collapse_{{@index}}" class="collapse alv_collapse_bs_event" aria-labelledby="alv_{{@index}}"
+         data-parent="#alv-accordion">
+        <div class="w3-container">
+            <div class="w3-half">
+                <div id="agenda_accordion_{{@index}}" class="w3-margin-left w3-margin-right">
+                    <h2>Agenda</h2>
+                    <ul class="w3-ul agenda-wrapper" id="agenda-wrapper_alv_{{alvId}}">
+                        {{#each this.agenda as |agenda agendaId|}}
+                        <li class="w3-bar">
+                            <div id="alv_{{alvId}}_agenda_{{agendaId}}"
+                                 class="w3-row w3-leftbar w3-rightbar w3-round w3-light-gray">
+                                <div class="w3-half">
                                             <span class="w3-bar-item">
                                                 {{name}} {{#if start_time}}({{start_time}}){{/if}}
                                             </span>
-                                        </div>
-                                        <div class="w3-quarter">
-                                            <span class="w3-bar-item">{{voting voting_option}}</span>
-                                        </div>
-                                        <div class="w3-quarter">
+                                </div>
+                                <div class="w3-quarter">
+                                    <span class="w3-bar-item">{{voting voting_option}}</span>
+                                </div>
+                                <div class="w3-quarter">
                                             <span class="w3-bar-item w3-right">
                                                 {{#unless agenda.start_time}}
                                                 <a href="javascript:agenda_start({{alvId}}, {{agendaId}})">
@@ -96,107 +105,114 @@
                                                     <img alt="delete" src="img/delete.png"></a>
 
                                                 <img alt="collapse" src="img/bullet_arrow_down.png"
-                                                     data-toggle="collapse" data-target="#alv_{{alvId}}_agenda_collapse_{{agendaId}}"
-                                                     aria-expanded="false" aria-controls="alv_{{alvId}}_agenda_collapse_{{agendaId}}">
+                                                     data-toggle="collapse"
+                                                     data-target="#alv_{{alvId}}_agenda_collapse_{{agendaId}}"
+                                                     aria-expanded="false"
+                                                     aria-controls="alv_{{alvId}}_agenda_collapse_{{agendaId}}">
                                             </span>
-                                        </div>
-                                    </div>
+                                </div>
+                            </div>
 
-                                    <div id="alv_{{alvId}}_agenda_collapse_{{agendaId}}" class="collapse agenda_collapse_bs_event w3-row w3-margin-left"
-                                         aria-labelledby="alv_{{alvId}}_agenda_{{agendaId}}" data-parent="#agenda_accordion_{{alvId}}">
+                            <div id="alv_{{alvId}}_agenda_collapse_{{agendaId}}"
+                                 class="collapse agenda_collapse_bs_event w3-row w3-margin-left"
+                                 aria-labelledby="alv_{{alvId}}_agenda_{{agendaId}}"
+                                 data-parent="#agenda_accordion_{{alvId}}">
 
-                                        {{#if voting_option}}
-                                            {{#if votings}}
-                                                {{#each votings}}
-                                                    Stemming{{#if name}} voor <b>{{name}}</b>{{/if}} ({{presence.length}} stemmen)
-                                                    <table class="w3-table-all">
-                                                        <tr class="w3-orange">
-                                                            <th>Stem</th>
-                                                            <th>Aantal</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Voor</td>
-                                                            <td>{{amount_yes}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Tegen</td>
-                                                            <td>{{amount_no}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Blanco</td>
-                                                            <td>{{amount_blank}}</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>Onthoudingen</td>
-                                                            <td>{{amount_abstain}}</td>
-                                                        </tr>
-                                                    </table>
-                                                    <i>{{result alvId agendaId @index}}</i><br>
-                                                    <hr>
-                                                {{/each}}
-                                            {{else}}
-                                                <i>Geen resultaten beschikbaar</i>
-                                            {{/if}}
-                                        {{else}}
-                                            <i>Geen stemming, dus ook geen resultaten beschikbaar</i>
-                                        {{/if}}
-                                    </div>
-                                </li>
-                            {{/each}}
-                        </ul>
+                                {{#if voting_option}}
+                                {{#if votings}}
+                                {{#each votings}}
+                                Stemming{{#if name}} voor <b>{{name}}</b>{{/if}} ({{total_votes}} stemmen)
+                                <table class="w3-table-all">
+                                    <tr class="w3-orange">
+                                        <th>Stem</th>
+                                        <th>Aantal</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Voor</td>
+                                        <td>{{amount_yes}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tegen</td>
+                                        <td>{{amount_no}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Blanco</td>
+                                        <td>{{amount_blank}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Onthoudingen</td>
+                                        <td>{{amount_abstain}}</td>
+                                    </tr>
+                                </table>
+                                <i>{{result alvId agendaId @index}}</i><br>
+                                <hr>
+                                {{/each}}
+                                {{else}}
+                                <i>Geen resultaten beschikbaar</i>
+                                {{/if}}
+                                {{else}}
+                                <i>Geen stemming, dus ook geen resultaten beschikbaar</i>
+                                {{/if}}
+                            </div>
+                        </li>
+                        {{/each}}
+                    </ul>
 
-                        <button type="button" class="btn w3-orange w3-text-white w3-margin-top" onclick="open_agenda_modal({{alvId}})">
-                            Item toevoegen
-                        </button>
-                    </div>
+                    <button type="button" class="btn w3-orange w3-text-white w3-margin-top"
+                            onclick="open_agenda_modal({{alvId}})">
+                        Item toevoegen
+                    </button>
                 </div>
+            </div>
 
-                <div class="w3-quarter">
-                    <div class="w3-margin-left w3-margin-right">
-                        <h2>Leden</h2>
-                        <ul class="w3-ul members-wrapper" id="members-wrapper_alv_{{alvId}}">
-                            <li>
-                                <b>Naam</b>
-                                <span class="w3-right"><b>Aanwezig</b></span>
-                            </li>
-                            {{#each this.members as |member memberId|}}
-                                <li>
-                                    {{member}}
-                                    <span class="w3-right">
+            <div class="w3-quarter">
+                <div class="w3-margin-left w3-margin-right">
+                    <h2>Leden</h2>
+                    <ul class="w3-ul members-wrapper" id="members-wrapper_alv_{{alvId}}">
+                        <li>
+                            <b>Naam</b>
+                            <span class="w3-right"><b>Aanwezig</b></span>
+                        </li>
+                        {{#each this.members as |member memberId|}}
+                        <li>
+                            {{member}}
+                            <span class="w3-right">
                                         <a href="javascript:toggle_presence({{alvId}}, {{memberId}})">
                                             <img alt="present" src="img/{{presenceButton memberId ../presence}}.png">
                                         </a>
                                     </span>
-                                </li>
-                            {{/each}}
-                        </ul>
-                        <i>Aantal aanwezigen: {{this.presence.length}}</i>
-                    </div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    <i>Aantal aanwezigen: {{this.presence.length}}</i>
                 </div>
-                <div class="w3-quarter">
-                    <div class="w3-margin-left w3-margin-right">
-                        <h2>Machtigingen</h2>
-                        <ul class="w3-ul auths-wrapper" id="auths-wrapper_alv_{{alvId}}">
-                            <li></li>
-                            {{#each auths as |auth authId|}}
-                                <li>
-                                    {{openStrike @key auth ../presence}}
-                                    {{lookup ../members @key}} heeft <b>{{lookup ../members auth}}</b> gemachtigd
-                                    {{closeStrike @key auth ../presence}}
-                                    <span class="w3-right">
-                                        <a href="javascript:delete_auth({{alvId}}, {{authId}})" onclick="return confirm('Weet je zeker dat je deze machtiging wilt verwijderen?')">
+            </div>
+            <div class="w3-quarter">
+                <div class="w3-margin-left w3-margin-right">
+                    <h2>Machtigingen</h2>
+                    <ul class="w3-ul auths-wrapper" id="auths-wrapper_alv_{{alvId}}">
+                        <li></li>
+                        {{#each auths as |auth authId|}}
+                        <li>
+                            {{openStrike @key auth ../presence}}
+                            {{lookup ../members @key}} heeft <b>{{lookup ../members auth}}</b> gemachtigd
+                            {{closeStrike @key auth ../presence}}
+                            <span class="w3-right">
+                                        <a href="javascript:delete_auth({{alvId}}, {{authId}})"
+                                           onclick="return confirm('Weet je zeker dat je deze machtiging wilt verwijderen?')">
                                             <img alt="delete" src="img/delete.png"></a>
                                     </span>
-                                </li>
-                            {{/each}}
-                        </ul>
-                        <button type="button" class="btn w3-orange w3-text-white w3-margin-top" onclick='open_auth_modal({{alvId}})'>
-                            Machtiging toevoegen
-                        </button>
-                    </div>
+                        </li>
+                        {{/each}}
+                    </ul>
+                    <button type="button" class="btn w3-orange w3-text-white w3-margin-top"
+                            onclick='open_auth_modal({{alvId}})'>
+                        Machtiging toevoegen
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
     {{/each}}
 </template>
 
@@ -207,7 +223,9 @@
     <img alt="logo" src="img/logo.png">
 
     <div class="w3-right">
-        <a href="https://github.com/PeterTillema/RSKiezersAnalyse/"><img alt="GitHub link" src="img/github.png"></a>
+        <a href="https://github.com/PeterTillema/RSKiezersAnalyse/">
+            <img alt="GitHub link" src="img/github.png">
+        </a>
     </div>
 </div>
 
@@ -224,7 +242,8 @@
                 </div>
                 <div class="modal-body">
                     <label for="alv_name">Naam:</label>
-                    <input id="alv_name" type="text" class="w3-input w3-border" name="alv_name" required maxlength="255">
+                    <input id="alv_name" type="text" class="w3-input w3-border" name="alv_name" required
+                           maxlength="255">
 
                     <label for="alv_date">Datum:</label>
                     <input id="alv_date" type="date" class="w3-input w3-border" name="alv_date" required>
@@ -233,8 +252,10 @@
                     <input id="alv_start_time" type="time" class="w3-input w3-border" name="alv_start_time" required>
 
                     <label for="alv_members">Leden:</label><br>
-                    <i><small>Kopieer en plak hier alle leden, die je van de website kan downloaden, op elke regel 1 naam.</small></i>
-                    <textarea id="alv_members" name="alv_members" class="w3-input w3-border" rows="10" required></textarea>
+                    <i><small>Kopieer en plak hier alle leden, die je van de website kan downloaden, op elke regel 1
+                        naam.</small></i>
+                    <textarea id="alv_members" name="alv_members" class="w3-input w3-border" rows="10"
+                              required></textarea>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
@@ -260,10 +281,12 @@
                 </div>
                 <div class="modal-body">
                     <label for="agenda_name">Naam: </label>
-                    <input id="agenda_name" type="text" class="w3-input w3-border" name="agenda_name" required maxlength="255">
+                    <input id="agenda_name" type="text" class="w3-input w3-border" name="agenda_name" required
+                           maxlength="255">
 
                     <label for="agenda_voting_option">Type: </label>
-                    <select id="agenda_voting_option" name="agenda_voting_option" class="w3-input w3-border" required></select>
+                    <select id="agenda_voting_option" name="agenda_voting_option" class="w3-input w3-border"
+                            required></select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
@@ -293,16 +316,20 @@
                     <input type="text" id="vote_modal_name" name="name" class="w3-input w3-border">
 
                     <label for="vote_modal_amount_yes">Aantal stemmen voor:</label>
-                    <input type="number" id="vote_modal_amount_yes" name="amount_yes" class="w3-input w3-border" required value="0">
+                    <input type="number" id="vote_modal_amount_yes" name="amount_yes" class="w3-input w3-border"
+                           required value="0">
 
                     <label for="vote_modal_amount_no">Aantal stemmen tegen:</label>
-                    <input type="number" id="vote_modal_amount_no" name="amount_no" class="w3-input w3-border" required value="0">
+                    <input type="number" id="vote_modal_amount_no" name="amount_no" class="w3-input w3-border" required
+                           value="0">
 
                     <label for="vote_modal_amount_blank">Aantal blanco stemmen:</label>
-                    <input type="number" id="vote_modal_amount_blank" name="amount_blank" class="w3-input w3-border" required value="0">
+                    <input type="number" id="vote_modal_amount_blank" name="amount_blank" class="w3-input w3-border"
+                           required value="0">
 
                     <label for="vote_modal_amount_abstain">Aantal onthoudingen:</label>
-                    <input type="number" id="vote_modal_amount_abstain" name="amount_abstain" class="w3-input w3-border" required value="0">
+                    <input type="number" id="vote_modal_amount_abstain" name="amount_abstain" class="w3-input w3-border"
+                           required value="0">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
@@ -328,10 +355,12 @@
                 </div>
                 <div class="modal-body">
                     <label for="auth_authorizing_member">Machtigend lid: </label>
-                    <select id="auth_authorizing_member" name="auth_authorizing_member" class="w3-input w3-border"></select>
+                    <select id="auth_authorizing_member" name="auth_authorizing_member"
+                            class="w3-input w3-border"></select>
 
                     <label for="auth_authorized_member">Gemachtigd lid: </label>
-                    <select id="auth_authorized_member" name="auth_authorized_member" class="w3-input w3-border"></select>
+                    <select id="auth_authorized_member" name="auth_authorized_member"
+                            class="w3-input w3-border"></select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
